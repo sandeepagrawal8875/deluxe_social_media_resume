@@ -1,0 +1,45 @@
+{% extends 'users/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+<main class="content float-right">
+    <section class="hero background parallax shadow-dark d-flex align-items-center padding" id="home" >
+        <div class="cta mx-auto mt-2">
+        <h1 class="section-title mt-0 mb-4">LOG IN<span class="dot"></span></h1>
+        <div class="spacer" data-height="50"></div>
+        <div class="row">
+            <div class="col-md">
+                <form method="POST" class="contact-form" action="">
+                    {% csrf_token %}
+                    <div class="messages"></div>
+                    <div class="form-group">
+                        <input type="text" name="username" placeholder="Username..." class="form-control" required="required">
+                        <div class="help-block with-errors"></div>
+                    </div>
+                    <div class="form-group">
+                        <input type="password" name="password" placeholder="Password..." class="form-control" required="required" >
+                        <div class="help-block with-errors"></div>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-default btn-danger btn-sm  btn-block"><i class="icon-paper-plane"></i>Login</button>
+
+                </form>
+                <div class="spacer" data-height="15"></div>
+                <div class="mt-4">
+                    <div class="d-flex justify-content-center links" style="color:white;">
+                        create new account? <a href="{% url 'register' %}" class="ml-2">Register</a>
+                    </div>
+                </div>
+            </div>.
+        </div>
+        {% for message in messages %}
+                <p id="messages">{{message}}</p>
+			{% endfor %}
+        </div>
+        <div class="overlay"></div>
+    </section>
+</main>
+
+{% endblock %}

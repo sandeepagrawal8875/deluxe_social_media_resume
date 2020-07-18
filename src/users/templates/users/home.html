@@ -1,0 +1,69 @@
+{% extends 'users/base.html' %}
+{% load static %}
+{% block content %}
+
+<!-- main content area -->
+	<main class="content float-right">
+
+		<!-- section login -->
+		<section class="hero background parallax shadow-dark d-flex align-items-center padding" id="home" >
+			<div class="cta mx-auto mt-2">
+			<h1 class="section-title mt-0 mb-4">LOG IN<span class="dot"></span></h1>
+			<div class="spacer" data-height="80"></div>
+
+			<div class="row">
+
+				<div class="col-md">
+					<!-- Contact Form -->
+					<form id="contact-form" class="contact-form" method="post" action="form/contact.php">
+
+						<div class="messages"></div>
+
+						<div class="row">
+							<div class="column col-md-6">
+								<!-- Name input -->
+								<div class="form-group">
+									<input type="text" class="form-control" name="InputName" id="InputName" placeholder="Your name" required="required" data-error="Name is required.">
+									<div class="help-block with-errors"></div>
+								</div>
+							</div>
+
+							<div class="column col-md-6">
+								<!-- Email input -->
+								<div class="form-group">
+									<input type="email" class="form-control" id="InputEmail" name="InputEmail" placeholder="Email address" required="required" data-error="Email is required.">
+									<div class="help-block with-errors"></div>
+								</div>
+							</div>
+
+							<div class="column col-md-12">
+								<!-- Email input -->
+								<div class="form-group">
+									<input type="text" class="form-control" id="InputSubject" name="InputSubject" placeholder="Subject" required="required" data-error="Subject is required.">
+									<div class="help-block with-errors"></div>
+								</div>
+							</div>
+
+							<div class="column col-md-12">
+								<!-- Message textarea -->
+								<div class="form-group">
+									<textarea name="InputMessage" id="InputMessage" class="form-control" rows="5" placeholder="Message" required="required" data-error="Message is required."></textarea>
+									<div class="help-block with-errors"></div>
+								</div>
+							</div>
+						</div>
+
+						<button type="submit" name="submit" id="submit" value="Submit" class="btn btn-default btn-danger "><i class="icon-paper-plane"></i>Send Message</button><!-- Send Button -->
+
+					</form>
+					<!-- Contact Form end -->
+				</div>
+
+			</div>
+			</div>
+			<div class="overlay"></div>
+		</section>
+
+	</main>
+
+{% endblock %}

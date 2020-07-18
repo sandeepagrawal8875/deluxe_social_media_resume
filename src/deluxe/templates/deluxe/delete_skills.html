@@ -1,0 +1,41 @@
+{% extends 'deluxe/create_base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+<!-- main content area -->
+<main class="content float-right">
+
+    <!-- section login -->
+    <section class="hero background parallax shadow-dark d-flex align-items-center padding" id="home" >
+        <div class="cta mx-auto mt-2">
+            <h1 class="section-title mt-0 mb-4">{{tag_line}}<span class="dot"></span></h1>
+            <div class="spacer" data-height="80"></div>
+            <div class="row">
+                <div class="col-md">
+                    <div class="container">
+                        <form method="POST" class="col-6 no-padding">
+                            {% csrf_token %}
+
+                            <p>Do you really want to delete ...? </p>
+                            
+                            <p class="bg-steel p-2"
+                            style="border: 1px solid white; border-radius: 10px; word-wrap: break-word;">
+                            {{ skills.skill }}
+                            </p>
+                            <div>
+                                <button class="btn btn-danger" type="submit">Yes</button><br/><br/>
+                            </div>
+                        </form>
+                        <a href="{% url 'home' %}" ><button class="btn btn-success" type="">Cancle</button></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="overlay"></div>
+    </section>
+
+</main>
+
+{% endblock %}

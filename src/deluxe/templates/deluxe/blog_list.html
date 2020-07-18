@@ -1,0 +1,88 @@
+{% extends 'deluxe/create_base.html' %}
+{% load static %}
+{% block content %}
+
+
+
+<!-- main content area -->
+<main class="content float-right">
+
+    <style>
+        .ground {
+            border-radius: 25px;
+        }
+
+        .circletag {
+            display: block;
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 50%;
+        }
+
+        .t-button {
+            background-color: transparent;
+        }
+        .t-button:hover{
+            color: blue;
+        }
+    </style>
+
+
+    <section class="shadow-blue white-bg padding" style="margin-top: 0">
+        <h3 class="section-title">Blog
+            {% if not p_user != None %}
+            <a href="{% url 'blog_create' %}" class="float-right"><img style="border:0; width:50px; padding:5px;" src="{% static 'icon/i-plus.png' %}" /><a>
+                    {% endif %}
+        </h3>
+        <div class="spacer" data-height="40"></div>
+        <div class="row">
+
+            {% for blog in blog_obj %}
+            <div class="col-sm-12 col-lg-12 m-4">
+                <div class="card hoverable p-5 shadow-dark white-bg ground ">
+                    <div class="card-body">
+                        <div class="row ">
+                            <div class="col-sm-3 col-lg-2 ">
+                                <a href="{% url 'user_profile' blog.author.profile.user.username %}"><img style="float:left;" class="circletag" src="{{blog.author.profile.image.url}}" alt="profile image"></a>
+                            </div>
+                            <div class="col-sm-9 col-lg-10">
+                                <a href="{% url 'user_profile' blog.author.profile.user.username %}"><h4 style="display:inline;">{{blog.author.profile.user.username}}</h4></a>
+                                {% if blog.author == user %}
+                                <a href="{% url 'blog_delete' blog.id %}" class="float-right"><img style="border:0; width:35px; padding:5px;" src="{% static 'icon/i-blue-delete.png' %}" /><a>
+                                        <a href="{% url 'blog_update' blog.id %}" class="float-right"><img style="border:0; width:35px; padding:5px;" src="{% static 'icon/i-edit.png' %}" /><a>
+                                                {% endif %}
+                                                <p style="display:inline; float:right;">{{blog.cr_date | date:"H:i l, d.m.y"}}</p>
+
+                                                <div class="spacer" data-height="30"></div>
+
+                                                <p class="text-muted font-weight-light mb-0">{{blog.text}}</p>
+                                                <div class="spacer" data-height="20"></div>
+                                                <center>
+                                                <img style=" height:300px; border-radius: 15px; " src="{{blog.picture.url}}">
+                                                </center>
+                                                <div class="spacer" data-height="30"></div>
+
+                                                <center>
+
+                                                        {% if blog.liked %}
+                                                        <a  href="{% url 'blog_dislike' blog.id %}" class="btn  t-button"><i style=" color: blue; font-size: 22px;" class="fas fa-thumbs-up"></i>{{blog.likedno}}</a>
+                                                        {% else %}
+                                                        <a  href="{% url 'blog_like' blog.id %}" class="btn  t-button"><i style="font-size: 22px;" class="far fa-thumbs-up"></i>{{blog.likedno}}</a>
+                                                        {% endif %}
+                                                        <a  href="{% url 'blog_detail' blog.id %}" class="btn  t-button"><i style="font-size: 22px;" class="far fa-comment"></i>{{ blog.number_of_comments }}</a>
+                                                        <a  href="{% url 'home' %}" class="btn  t-button"><i style="font-size: 22px;" class="fas fa-share-alt"></i></a>
+                                 
+                                                </center>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+
+        </div>
+    </section>
+</main>
+
+{% endblock %}

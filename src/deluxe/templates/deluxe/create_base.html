@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en-US">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>Bako - Personal Portfolio & Resume HTML Template</title>
+    <meta name="description" content="Bako - Personal Portfolio & Resume HTML Template">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="shortcut icon" type="image/x-icon" href="https://via.placeholder.com/32x32">
+
+    <!-- STYLESHEETS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <link rel="stylesheet" href="{% static 'css/all.min.css' %}" type="text/css" media="all">
+    <link rel="stylesheet" href="{% static 'css/simple-line-icons.css' %}" type="text/css" media="all">
+    <link rel="stylesheet" href="{% static 'css/slick.css' %}" type="text/css" media="all">
+    <link rel="stylesheet" href="{% static 'css/simplebar.css' %}" type="text/css" media="all">
+    <link rel="stylesheet" href="{% static 'css/jquery.mCustomScrollbar.min.css' %}" type="text/css" media="all">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}" type="text/css" media="all">
+
+</head>
+
+<body>
+
+    <!-- preloader -->
+    <div id="preloader">
+        <div class="outer">
+            <div class="spinner">
+                <div class="dot1"></div>
+                <div class="dot2"></div>
+            </div>
+        </div>
+    </div>
+
+
+<style>
+.image-crop {
+    width: 100px;
+    height: 100px;
+    position: relative;
+    overflow: hidden;
+    border-radius: 50%;
+}
+.header-inner {
+    height:1000px;
+}
+</style>
+
+    <!-- site wrapper -->
+    <div class="site-wrapper">
+
+        <!-- mobile header -->
+        <div class="mobile-header py-2 px-3 mt-4">
+            <button class="menu-icon mr-2">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <a href="index.html" class="logo"><img src="https://via.placeholder.com/70x70" alt="Bako Doe" /></a>
+            <a href="index.html" class="site-title dot ml-2">Bako Doe</a>
+        </div>
+
+        <!-- header -->
+        <header class="left float-left shadow-dark" id="header">
+            <button type="button" class="close" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            <div class="header-inner d-flex align-items-start flex-column">
+                <a href="{% url 'user_profile' user.username %}" class="logo"><img class="image-crop" src="{{user.profile.image.url}}" alt="Bako Doe" /></a>
+                <a href="{% url 'user_profile' user.username %}" class="site-title dot mt-3">{{user.username}}</a>
+                <span class="site-slogan">{{user.profile.field}}</span>
+
+                <!-- navigation menu -->
+                <nav>
+                    
+                    <a style="padding-left:5px;" href="{% url 'home' %}"><i class="fas fa-home"></i></a>
+                    <a style="padding-left:20px;" href="{% url 'blog_list' %}"><i class="fas fa-list-alt"></i></a>
+                    <a style="padding-left:20px;" href="{% url 'search_profile' %}"><i class="fas fa-search"></i></a>
+                    <a style="padding-left:20px;" href="{% url 'logout' %}"><i class="fas fa-power-off"></i></a>
+                    <a style="padding-left:20px;" href="{% url 'reset_password' %}"><i class="fas fa-cogs"></i></a>
+                    <div class="spacer" data-height="20"></div>
+
+                    <ul class="vertical-menu scrollspy">
+                        {% if user.is_authenticated %}
+                        <li><a href="{% url 'profile_create' %}"><i class="icon-user"></i>Update About</a></li>
+                        <li><a href="{% url 'blog_create' %}"><i class="fas fa-id-card-alt"></i>Add Blog</a></li>
+                        <li><a href="{% url 'add_skills' %}"><i class="far fa-gem"></i>Add skills</a></li>
+                        <li><a href="{% url 'add_hobby' %}"><i class="icon-grid"></i>Add Hobby</a></li>
+                        <li><a href="{% url 'add_education' %}"><i class="icon-graduation"></i>Add Education</a></li>
+                        <li><a href="{% url 'add_project' %}"><i class="icon-bulb"></i>Add project</a></li>
+                        <li><a href="{% url 'add_certificate' %}"><i class="far fa-address-card"></i>Add certificate</a></li>
+                        {% endif %}
+                    </ul>
+                </nav>
+
+                <!-- footer -->
+                <div class="footer mt-auto">
+
+                    <!-- copyright -->
+                    <span class="copyright">© 2020 Bako Template</span>
+                </div>
+            </div>
+        </header>
+
+        {% block content %}
+        {% endblock %}
+
+    </div>
+
+    <!-- Go to top button -->
+    <a href="javascript:" id="return-to-top"><i class="fa fa-chevron-up"></i></a>
+
+    <!-- SCRIPTS -->
+    <script src="{% static 'js/jquery-1.12.3.min.js' %}"></script>
+    <script src="{% static 'js/jquery.easing.min.js' %}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+    <script src="{% static 'js/jquery.waypoints.min.js' %}"></script>
+    <script src="{% static 'js/jquery.counterup.min.js' %}"></script>
+    <script src="{% static 'js/jquery.mCustomScrollbar.concat.min.js' %}"></script>
+    <script src="{% static 'js/isotope.pkgd.min.js' %}"></script>
+    <script src="{% static 'js/infinite-scroll.min.js' %}"></script>
+    <script src="{% static 'js/imagesloaded.pkgd.min.js' %}"></script>
+    <script src="{% static 'js/slick.min.js' %}"></script>
+    <script src="{% static 'js/contact.js' %}"></script>
+    <script src="{% static 'js/validator.js' %}"></script>
+    <script src="{% static 'js/custom.js' %}"></script>
+
+</body>
+
+</html>

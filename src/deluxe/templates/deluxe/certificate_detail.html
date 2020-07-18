@@ -1,0 +1,28 @@
+{% extends 'deluxe/create_base.html' %}
+{% load static %}
+{% block content %}
+
+
+<main class="content float-right">
+
+    <section class="single-portfolio background-white rounded padding-50 shadow-blue mt-0">
+        <h2 class="archive-header">{{certificate.certificate_title}}</h2>
+        {% if certificate.author == user %}
+            <a href="{% url 'certificate_delete' certificate.id %}" class="float-right"><img style="border:0; width:35px; padding:5px;" src="{% static 'icon/i-blue-delete.png' %}" /><a>
+            <a href="{% url 'certificate_update' certificate.id %}" class="float-right"><img style="border:0; width:35px; padding:5px;" src="{% static 'icon/i-edit.png' %}" /><a>
+        {% endif %}
+
+        <ul class="list-inline portfolio-info mb-0 mt-4">
+            <li class="list-inline-item"><i class="icon-user"></i>{{certificate.author.profile.user.username}}</li>
+            <li class="list-inline-item"><i class="far fa-clock"></i>{{certificate.cr_date}}</li>
+            <li class="list-inline-item"><i class="fas fa-graduation-cap"></i>{{certificate.source}}</li>
+        </ul>
+        <div class="spacer" data-height="40"></div>
+        <center>
+        <img style="height:500px; border-radius:25px;" src="{{certificate.certificate_pic.url}}" alt="certificate">
+        </center>
+    </section>
+    
+</main>
+
+{% endblock %}

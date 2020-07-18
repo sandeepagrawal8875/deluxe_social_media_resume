@@ -1,0 +1,68 @@
+{% extends 'deluxe/create_base.html' %}
+{% load static %}
+{% block content %}
+
+<main class="content float-right">
+ <!-- section search -->
+    <section id="follow" class="shadow-blue white-bg padding"  style="margin-top: 0">
+        {% if follow == 'follows' %}
+            <div>
+                <h3 style="float: left; display: inline;" class="section-title">Following</h3>
+
+            </div>
+
+            <div class="spacer" data-height="80"></div>
+
+            <div class="row">
+                {% for follow in follows %}
+                <div class="col-sm-12 m-4">
+                    <div class="card hoverable p-5 shadow-dark white-bg " style="border-radius: 25px;">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-sm-2">
+                                    <img  style=" height:90px; width:90px; border-radius: 50%;" src="{{follow.follow_user.profile.image.url}}" />
+                                </div>
+                                <div class="col-sm-8">
+                                    <h4 style="margin: 0px;"><a href="{% url 'user_profile' follow.follow_user.profile.user.username %}">{{follow.follow_user.profile.user.username}}</a></h4>
+                                    <p style="margin: 0px;">{{follow.follow_user.profile.user.email}}</p>
+                                    <p style="margin: 0px;">{{follow.follow_user.profile.location}}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div>
+                <h3 style="float: left; display: inline;" class="section-title">Followers</h3>
+            </div>
+
+            <div class="spacer" data-height="80"></div>
+
+            <div class="row">
+                {% for follow in follows %}
+                <div class="col-sm-12 m-4">
+                    <div class="card hoverable p-5 shadow-dark white-bg " style="border-radius: 25px;">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-sm-2">
+                                    <img  style=" height:90px; width:90px; border-radius: 50%;" src="{{follow.user.profile.image.url}}" />
+                                </div>
+                                <div class="col-sm-8">
+                                    <h4 style="margin: 0px;"><a href="{% url 'user_profile' follow.user.username %}">{{follow.user.username}}</a></h4>
+                                    <p style="margin: 0px;">{{follow.user.email}}</p>
+                                    <p style="margin: 0px;">{{follow.user.profile.location}}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+    </section> 
+    
+</main>
+{% endblock %}

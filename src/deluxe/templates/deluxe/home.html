@@ -1,0 +1,670 @@
+{% extends 'deluxe/base.html' %}
+{% load static %}
+{% block content %}
+
+<!-- main content area -->
+<main class="content float-right">
+
+    <style>
+        .about {
+            height: auto;
+            margin-top: 0;
+        }
+        .image-cropper {
+                width: 150px;
+                height: 150px;
+                position: relative;
+                overflow: hidden;
+                border-radius: 50%;
+            }
+    </style>
+
+    <!-- section about -->
+    {% if p_user != None %}
+    <section id="about" class="about shadow-blue white-bg padding">
+        <h3 class="section-title">Profile</h3>
+        <div class="spacer" data-height="60"></div>
+
+        <div class="row">
+            <div class="col-md-3">
+                <img class="image-cropper" style="border-radius: 50%;" src="{{p_user.profile.image.url}}" alt="about" />
+            </div>
+            <div class="col-md-9">
+                <h2 class="mt-4 mt-md-0 mb-4">{{p_user.username}}</h2>
+                <p class="mb-0">{{p_user.profile.about}}</p>
+                <div class="row my-4">
+                    <div class="col-md-6">
+                        <p class="mb-2">Name: <span class="text-dark">{{p_user.profile.name}}</span></p>
+                        <p class="mb-0">Age: <span class="text-dark">{{p_user.profile.age}}</span></p>
+                    </div>
+                    <div class="col-md-6 mt-2 mt-md-0 mt-sm-2">
+                        <p class="mb-0">gender: <span class="text-dark">{{p_user.profile.gender}}</span></p>
+                        <p class="mb-0">Email: <span class="text-dark">{{p_user.email}}</span></p>
+                    </div>
+                </div>
+
+                <div class="spacer" data-height="30"></div>
+                
+                <div class=" color-white background parallax padding">
+                    <div class="row relative z-1">
+                        <div class="col-md-3 col-sm-3">
+                            <div class="fact-item text-center">
+                                <i class="icon-cup icon-circle"></i>
+                                {% if p_user != None %}
+                                <a href="{% url 'followers' p_user.username %}"><h2  style="color:#4A63E7;" >{{ p_user.profile.followers }}</h2>
+                                <span>Followers</span>
+                                </a>
+                                {% else %}
+                                <a href="{% url 'followers' user.username %}"><h2  style="color:#4A63E7;" >{{ user.profile.followers }}</h2>
+                                <span>Followers</span>
+                                </a>
+                                {% endif %}
+                                
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-sm-3">
+                            <div class="fact-item text-center">
+                                <i class="icon-like icon-circle"></i>
+                                {% if p_user != None %}
+                                <a href="{% url 'follows' p_user.username %}"><h2 style="color:#4A63E7;" >{{ p_user.profile.following }}</h2>
+                                <span>Following</span>
+                                </a>
+                                {% else %}
+                                <a href="{% url 'follows' user.username %}"><h2 style="color:#4A63E7;" >{{ user.profile.following }}</h2>
+                                <span>Following</span>
+                                </a>
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <div class="col-md-3 col-sm-3">
+                            <div class="fact-item text-center">
+                                <i class="icon-emotsmile icon-circle"></i>
+                                <h2  style="color:#4A63E7;" >{{blog_count}}</h2>
+                                <span  style="color:black;" >Post</span>
+                            </div>
+                        </div>
+                        
+                    </div>
+                    
+                    <div class="d-flex">
+                        {% if p_user != None and p_user.id != user.id  and user.username != '' %}
+                        <form method="POST">
+                            {% csrf_token %}
+                            <div class="form-group">
+                                <div class="spacer" data-height="30"></div>
+                                <button class="btn btn-default text-center" name="{% if can_follow %}follow{% else %}unfollow{% endif %}" type="submit">
+                                    {% if can_follow %}
+                                    FOLLOW
+                                    {% else %}
+                                    UNFOLLOW
+                                    {% endif %}
+                                </button>
+                            </div>
+                        </form>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    {% else %}
+    <!-- section about -->
+    <section id="about" class="about shadow-blue white-bg padding">
+        <h3 class="section-title">Profile</h3>
+        <div class="spacer" data-height="60"></div>
+
+        <div class="row">
+            <div class="col-md-3">
+                <img class="image-cropper" src="{{user.profile.image.url}}" alt="about">
+            </div>
+            <div class="col-md-9">
+                <h2 class="mt-4 mt-md-0 mb-4">{{user.username}}
+                    <a href="{% url 'profile_create' %}" class="btn float-right" style=" color: blue; font-size: 22px;"><i class="fas fa-user-cog"></i></a>
+                </h2>
+                <p class="mb-0">{{user.profile.about}}</p>
+                <div class="row my-4">
+                    <div class="col-md-6">
+                        <p class="mb-2">Name: <span class="text-dark">{{user.profile.name}}</span></p>
+                        <p class="mb-0">Age: <span class="text-dark">{{user.profile.age}}</span></p>
+                    </div>
+                    <div class="col-md-6 mt-2 mt-md-0 mt-sm-2">
+                        <p class="mb-0">gender: <span class="text-dark">{{user.profile.gender}}</span></p>
+                        <p class="mb-0">Email: <span class="text-dark">{{user.email}}</span></p>
+                    </div>
+                </div>
+                <div class="spacer" data-height="30"></div>
+
+                <div class=" color-white background parallax padding">
+                    <div class="row relative z-1">
+                        <div class="col-md-3 col-sm-3">
+                            <div class="fact-item text-center">
+                                <i class="icon-cup icon-circle"></i>
+                                {% if p_user != None %}
+                                <a href="{% url 'followers' p_user.username %}"><h2  style="color:#4A63E7;" >{{ p_user.profile.followers }}</h2>
+                                <span>Followers</span>
+                                </a>
+                                {% else %}
+                                <a href="{% url 'followers' user.username %}"><h2  style="color:#4A63E7;" >{{ user.profile.followers }}</h2>
+                                <span>Followers</span>
+                                </a>
+                                {% endif %}
+                                
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-sm-3">
+                            <div class="fact-item text-center">
+                                <i class="icon-like icon-circle"></i>
+                                {% if p_user != None %}
+                                <a href="{% url 'follows' p_user.username %}"><h2 style="color:#4A63E7;" >{{ p_user.profile.following }}</h2>
+                                <span>Following</span>
+                                </a>
+                                {% else %}
+                                <a href="{% url 'follows' user.username %}"><h2 style="color:#4A63E7;" >{{ user.profile.following }}</h2>
+                                <span>Following</span>
+                                </a>
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <div class="col-md-3 col-sm-3">
+                            <div class="fact-item text-center">
+                                <i class="icon-emotsmile icon-circle"></i>
+                                <h2  style="color:#4A63E7;" >{{blog_count}}</h2>
+                                <span  style="color:black;" >Post</span>
+                            </div>
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    {% endif %}
+
+
+    <!-- section blog -->
+    <section id="blog" class="shadow-blue white-bg padding">
+
+        <h3 class="section-title">Recent posts
+            {% if not p_user != None %}
+            <a href="{% url 'blog_create' %}" class="float-right"><img style="border:0; width:50px; padding:5px;" src="{% static 'icon/i-plus.png' %}" /><a>
+            {% endif %}
+            <a href="{% url 'blog_list' %}" class="float-right" style=" color: #4A63E7; font-size: 32px; padding:7px;"><i class="fas fa-list-alt"></i><a>
+        </h3>
+
+        <div class="spacer" data-height="60"></div>
+
+        <div class="row">
+            {% for blog in blog_obj %}
+            <div class="col-md-4">
+                <div class="blog-item">
+                    <div class="thumb">
+                        <a href="{% url 'blog_detail' blog.id %}">
+                            <img style="height:200px; width:100%;" src="{{blog.picture.url}}" alt="blog-title" />
+                        </a>
+                    </div>
+                    <h4 class="mt-4 mb-0"><a href="{% url 'blog_detail' blog.id %}">{{blog.text | truncatewords:10}}</a></h4>
+                    <ul class="list-inline meta mb-0 mt-3">
+                        <li class="list-inline-item">{{blog.cr_date}}</li>
+                        <li class="list-inline-item">{{blog.author.profile.name}}</li>
+                    </ul>
+                    <div class="spacer" data-height="20"></div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <center>
+        <nav aria-label="Page navigation example">
+            {% if blog_obj.has_other_pages %}
+            <div class="spacer" data-height="40"></div>
+
+            <ul class="pagination" >
+                {% if blog_obj.has_previous %}
+                <li style="background-color: #4a63e7; display:inline;" class="page-item"><a class="page-link" href="?page={{ blog_obj.previous_page_number }}">&laquo;</a></li>
+                {% else %}
+                <li class="disabled"></li>
+                {% endif %}
+
+                {% for i in blog_obj.paginator.page_range %}
+                    {% if blog_obj.number == i %}
+                    <li style="background-color: #4a63e7; display:inline;" class="page-item active"><span>{{ i }}</span></li>
+                    {% else %}
+                    <li style="background-color: #4a63e7; display:inline;" class="page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+                    {% endif %}
+                {% endfor %}
+
+                {% if blog_obj.has_next %}
+                <li style="background-color: #4a63e7; display:inline;" class="page-item"><a class="page-link" href="?page={{ blog_obj.next_page_number }}">&raquo;</a></li>
+                {% else %}
+                <li class="disabled"></li>
+                {% endif %}
+            </ul>
+            {% endif %}
+        </nav>
+        </center>
+    </section>
+
+
+    <!-- section skills -->
+    <section id="skills" class="shadow-blue white-bg padding">
+
+        <h3 class="section-title">My skills
+            {% if not p_user != None %}
+            <a href="{% url 'add_skills' %}" class="float-right"><img style="border:0; width:50px; padding:5px;" src="{% static 'icon/i-plus.png' %}" /><a>
+            {% endif %}
+        </h3>
+        <div class="spacer" data-height="60"></div>
+        <div class="row mt-5">
+            {% for skill  in skills_obj %}
+            <div class="col-md-6">
+                <!-- skill item -->
+                <div class="skill-item">
+                    <div class="skill-info clearfix">
+                        <h4 class="float-left mb-3 mt-0">{{skill.skill}}</h4>
+                        <span class="float-right p-1">{{skill.percentage}}%</span>
+                        {% if skill.author == user %}
+                            <a href="{% url 'skills_delete' skill.id %}" class="float-right"><img style="border:0; width:35px; padding:5px;" src="{% static 'icon/i-blue-delete.png' %}" /><a>
+                            <a href="{% url 'skills_update' skill.id %}" class="float-right"><img style="border:0; width:35px; padding:5px;" src="{% static 'icon/i-edit.png' %}" /><a>
+                        {% endif %}
+                    </div>
+                    <div class="progress">
+                        <div class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="{{skill.percentage}}">
+                        </div>
+                    </div>
+                    <div class="spacer" data-height="50"></div>
+                </div>
+            </div>
+            {% endfor %}
+
+        </div>
+    </section>
+
+
+    <!-- section hobbies -->
+    <section id="hobbies" class="shadow-blue white-bg padding">
+        <h3 class="section-title">Hobbies
+            {% if not p_user != None %}
+            <a href="{% url 'add_hobby' %}" class="float-right"><img style="border:0; width:50px; padding:5px;" src="{% static 'icon/i-plus.png' %}" /><a>
+            {% endif %}
+        </h3>
+        <div class="spacer" data-height="80"></div>
+
+        <div class="row">
+            {% for hobby in hobby_obj  %}
+            <div class="col-md-4 col-sm-6">
+                <div class="service-item text-center">
+                    <i class="icon-globe icon-simple"></i>
+                    <h4 class="my-3">{{hobby.hobby}}</h4>
+                    {% if hobby.author == user %}
+                        <a href="{% url 'hobby_delete' hobby.id %}" class="float-right"><img style="border:0; width:35px; padding:5px;" src="{% static 'icon/i-blue-delete.png' %}" /><a>
+                    {% endif %}
+                    <p class="mb-0">{{hobby.about_hobby}}</p>
+                </div>
+                <div class="spacer" data-height="20"></div>
+            </div>
+            {% endfor %}
+        </div>
+    </section>
+
+
+    <!-- section education -->
+    <section id="education" class="shadow-blue white-bg padding">
+
+        <h3 class="section-title">Education
+            {% if not p_user != None %}
+            <a href="{% url 'add_education' %}" class="float-right"><img style="border:0; width:50px; padding:5px;" src="{% static 'icon/i-plus.png' %}" /><a>
+                    {% endif %}
+        </h3>
+
+        <div class="spacer" data-height="80"></div>
+
+        <!-- timeline -->
+        <div class="timeline">
+            {% for education in education_obj %}
+            <div class="entry">
+                <div class="title">
+                    <span>{{education.start_year}} - {{education.end_year}}</span>
+                </div>
+                <div class="body">
+                    {% if education.author == user %}
+                        <a href="{% url 'education_delete' education.id %}" class="float-right"><img style="border:0; width:35px; padding:5px;" src="{% static 'icon/i-blue-delete.png' %}" /><a>
+                        <a href="{% url 'education_update' education.id %}" class="float-right"><img style="border:0; width:35px; padding:5px;" src="{% static 'icon/i-edit.png' %}" /><a>
+                    {% endif %}
+
+                    <h4 class="mt-0"><a href="{% url 'education_detail' education.id %}">{{education.dgree_name}} </a></h4>
+                    <p>{{education.about}}</p>
+
+                </div>
+            </div>
+            {% endfor %}
+
+            <span class="timeline-line"></span>
+        </div>
+    </section>
+
+
+    <!-- section project -->
+    <section id="project" class="shadow-blue white-bg padding">
+
+        <h3 class="section-title">Projects
+            {% if not p_user != None %}
+            <a href="{% url 'add_project' %}" class="float-right"><img style="border:0; width:50px; padding:5px;" src="{% static 'icon/i-plus.png' %}" /><a>
+            {% endif %}
+        </h3>
+
+        <div class="spacer" data-height="80"></div>
+
+        <!-- portolio wrapper -->
+        <div class="row portfolio-wrapper">
+            {% for project in project_obj %}
+            <!-- portfolio item -->
+            <div class="col-md-4 col-sm-6 grid-item video">
+                <a href="{% url 'project_detail' project.id %}">
+                    <div class="portfolio-item">
+                        <div class="details">
+                            <h4 class="title">{{project.project_name}}</h4>
+                            <span class="term">{{project.contribution}}</span>
+                        </div>
+
+                        <span class="plus-icon">+</span>
+
+                        <div class="thumb">
+                            <img src="{{project.main_thumbnial.url}}" alt="project" />
+                            <div class="mask"></div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            {% endfor %}
+        </div>
+
+        <div class="spacer" data-height="40"></div>
+
+
+        <!-- more button -->
+        <center>
+        <nav aria-label="Page navigation example">
+            {% if project_obj.has_other_pages %}
+            <ul class="pagination" >
+                {% if project_obj.has_previous %}
+                <li style="background-color: #4a63e7; display:inline;" class="page-item"><a class="page-link" href="?page={{ project_obj.previous_page_number }}">&laquo;</a></li>
+                {% else %}
+                <li class="disabled"></li>
+                {% endif %}
+
+                {% for i in project_obj.paginator.page_range %}
+                    {% if project_obj.number == i %}
+                    <li style="background-color: #4a63e7; display:inline;" class="page-item active"><span>{{ i }}</span></li>
+                    {% else %}
+                    <li style="background-color: #4a63e7; display:inline;" class="page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+                    {% endif %}
+                {% endfor %}
+
+                {% if project_obj.has_next %}
+                <li style="background-color: #4a63e7; display:inline;" class="page-item"><a class="page-link" href="?page={{ project_obj.next_page_number }}">&raquo;</a></li>
+                {% else %}
+                <li class="disabled"></li>
+                {% endif %}
+            </ul>
+            {% endif %}
+        </nav>
+        </center>
+    </section>
+
+
+    <!-- section Certificate -->
+    <section id="certificate" class="shadow-blue white-bg padding">
+
+        <h3 class="section-title">Certificate
+            {% if not p_user != None %}
+                <a href="{% url 'add_certificate' %}" class="float-right"><img style="border:0; width:50px; padding:5px;" src="{% static 'icon/i-plus.png' %}" /><a>
+            {% endif %}
+        </h3>
+
+        <div class="spacer" data-height="80"></div>
+
+        <!-- portfolio filter (desktop) -->
+        <ul class="portfolio-filter list-inline">
+            <li class="current list-inline-item" data-filter="*">All Projects</li>
+            <li class="list-inline-item" data-filter=".Udemy">Udemy</li>
+            <li class="list-inline-item" data-filter=".Coursera">Coursera</li>
+            <li class="list-inline-item" data-filter=".Edureca">Edureca</li>
+            <li class="list-inline-item" data-filter=".Edx">Edx</li>
+            <li class="list-inline-item" data-filter=".Offline">Offline</li>
+            <li class="list-inline-item" data-filter=".Intership">Intership</li>
+            <li class="list-inline-item" data-filter=".Company">Company</li>
+            <li class="list-inline-item" data-filter=".Other">Other</li>
+        </ul>
+
+        <!-- portfolio filter (mobile) -->
+        <div class="pf-filter-wrapper mb-4">
+            <select class="portfolio-filter-mobile">
+                <option value="*">Everything</option>
+                <option value=".creative">Creative</option>
+                <option value=".video">Video</option>
+                <option value=".design">Design</option>
+                <option value=".udemy">udemy </option>
+            </select>
+        </div>
+
+        <!-- portolio wrapper -->
+        <div class="row portfolio-wrapper">
+            {% for certificate in certificate_obj %}
+            <!-- portfolio item -->
+            <div class="col-md-4 col-sm-6 grid-item {{certificate.source}}">
+                <a href="{% url 'certificate_detail' certificate.id %}">
+                    <div class="portfolio-item">
+                        <div class="details">
+                            <h4 class="title">{{certificate.certificate_title}}</h4>
+                            <span class="term">{{certificate.source}}</span>
+                        </div>
+                        <span class="plus-icon">+</span>
+                        <div class="thumb">
+                            <img src="{{certificate.certificate_pic.url}}" alt="Portfolio-title" />
+                            <div class="mask"></div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            {% endfor %}
+        </div>
+
+        <div class="spacer" data-height="40"></div>
+
+        <!-- more button -->
+        <center>
+        <nav aria-label="Page navigation example">
+            {% if certificate_obj.has_other_pages %}
+            <ul class="pagination" >
+                {% if certificate_obj.has_previous %}
+                <li style="background-color: #4a63e7; display:inline;" class="page-item"><a class="page-link" href="?page={{ certificate_obj.previous_page_number }}">&laquo;</a></li>
+                {% else %}
+                <li class="disabled"></li>
+                {% endif %}
+
+                {% for i in certificate_obj.paginator.page_range %}
+                    {% if certificate_obj.number == i %}
+                    <li style="background-color: #4a63e7; display:inline;" class="page-item active"><span>{{ i }}</span></li>
+                    {% else %}
+                    <li style="background-color: #4a63e7; display:inline;" class="page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+                    {% endif %}
+                {% endfor %}
+
+                {% if certificate_obj.has_next %}
+                <li style="background-color: #4a63e7; display:inline;" class="page-item"><a class="page-link" href="?page={{ certificate_obj.next_page_number }}">&raquo;</a></li>
+                {% else %}
+                <li class="disabled"></li>
+                {% endif %}
+            </ul>
+            {% endif %}
+        </nav>
+        </center>
+    </section>
+
+
+    <!-- section contact -->
+    <section id="contact" class="shadow-blue white-bg padding">
+        <h3 class="section-title">Get in touch</h3>
+        <div class="spacer" data-height="80"></div>
+
+        {% if p_user != None %}
+        <div class="row">
+            <div class="col-md-12 mb-4 mb-md-0">
+                <!-- contact info -->
+                <div class="row">
+                    <div class=" col-md-4 contact-info mb-5">
+                        <i class="icon-phone"></i>
+                        <div class="details">
+                            <h5>Phone</h5>
+                            <span>{{p_user.profile.phone_no}}</span>
+                        </div>
+                    </div>
+                    <div class="col-md-4 contact-info mb-5">
+                        <i class="icon-envelope"></i>
+                        <div class="details">
+                            <h5>Email address</h5>
+                            <span>{{p_user.profile.user.email}}</span>
+                        </div>
+                    </div>
+                    <div class="col-md-4 contact-info">
+                        <i class="icon-location-pin"></i>
+                        <div class="details">
+                            <h5>Location</h5>
+                            <span>{{p_user.profile.location}}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% else %}
+        <div class="row">
+            <div class="col-md-12 mb-4 mb-md-0">
+                <!-- contact info -->
+                <div class="row">
+                    <div class=" col-md-4 contact-info mb-5">
+                        <i class="icon-phone"></i>
+                        <div class="details">
+                            <h5>Phone</h5>
+                            <span>{{user.profile.phone_no}}</span>
+                        </div>
+                    </div>
+                    <div class="col-md-4 contact-info mb-5">
+                        <i class="icon-envelope"></i>
+                        <div class="details">
+                            <h5>Email address</h5>
+                            <span>{{user.profile.user.email}}</span>
+                        </div>
+                    </div>
+                    <div class="col-md-4 contact-info">
+                        <i class="icon-location-pin"></i>
+                        <div class="details">
+                            <h5>Location</h5>
+                            <span>{{user.profile.location}}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
+    </section>
+
+
+    {% comment %} <!-- section search -->
+    <section id="search" class="shadow-blue white-bg padding">
+        <div>
+            <h3 style="float: left; display: inline;" class="section-title">Profile</h3>
+            <form style="float: right; display: inline;" class="form-inline md-form mr-auto mb-4">
+                <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
+                <button class="btn btn-success btn-rounded btn-sm my-0" type="submit">Search</button>
+            </form>
+        </div>
+        <div class="spacer" data-height="80"></div>
+
+        <div class="row">
+
+            <div class="col-sm-12 m-4">
+                <div class="card hoverable p-5 shadow-dark white-bg " style="border-radius: 25px;">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-sm-2">
+                                <img  style=" height:90px; width:90px; border-radius: 50%;" src="media\image\bodybuilding-185a_2.jpg" />
+                            </div>
+                            <div class="col-sm-8">
+                                <h4 style="margin: 0px;"><a href="#"> sunny </a></h4>
+                                <p style="margin: 0px;">sunnyagrawal4711@gmail.com</p>
+                                <p style="margin: 0px;">jabalpur</p>
+                            </div>
+                            <div class="col-sm-2">
+                                <button class="btn btn-primary" style="margin-top: 15px;">follow</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+             <div class="col-sm-12 m-4">
+                <div class="card hoverable p-5 shadow-dark white-bg " style="border-radius: 25px;">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-sm-2">
+                                <img  style=" height:90px; width:90px; border-radius: 50%;" src="media\image\bodybuilding-185a_2.jpg" />
+                            </div>
+                            <div class="col-sm-8">
+                                <h4 style="margin: 0px;"><a href="#"> sunny </a></h4>
+                                <p style="margin: 0px;">sunnyagrawal4711@gmail.com</p>
+                                <p style="margin: 0px;">jabalpur</p>
+                            </div>
+                            <div class="col-sm-2">
+                                <button class="btn btn-primary" style="margin-top: 15px;">follow</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-12 m-4">
+                <div class="card hoverable p-5 shadow-dark white-bg " style="border-radius: 25px;">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-sm-2">
+                                <img  style=" height:90px; width:90px; border-radius: 50%;" src="media\image\bodybuilding-185a_2.jpg" />
+                            </div>
+                            <div class="col-sm-8">
+                                <h4 style="margin: 0px;"><a href="#"> sunny </a></h4>
+                                <p style="margin: 0px;">sunnyagrawal4711@gmail.com</p>
+                                <p style="margin: 0px;">jabalpur</p>
+                            </div>
+                            <div class="col-sm-2">
+                                <button class="btn btn-primary" style="margin-top: 15px;">follow</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-12 m-4">
+                <div class="card hoverable p-5 shadow-dark white-bg " style="border-radius: 25px;">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-sm-2">
+                                <img  style=" height:90px; width:90px; border-radius: 50%;" src="media\image\bodybuilding-185a_2.jpg" />
+                            </div>
+                            <div class="col-sm-8">
+                                <h4 style="margin: 0px;"><a href="#"> sunny </a></h4>
+                                <p style="margin: 0px;">sunnyagrawal4711@gmail.com</p>
+                                <p style="margin: 0px;">jabalpur</p>
+                            </div>
+                            <div class="col-sm-2">
+                                <button class="btn btn-primary" style="margin-top: 15px;">follow</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </section> {% endcomment %}
+
+
+{% endblock %}

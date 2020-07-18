@@ -1,0 +1,143 @@
+{% extends 'deluxe/create_base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+
+
+<!-- main content area -->
+<main class="content float-right">
+
+    <style>
+        .ground {
+            border-radius: 25px;
+        }
+
+        .circletag {
+            display: block;
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 50%;
+        }
+        .t-button {
+            background-color: transparent;
+        }
+        .t-button:hover{
+            color: blue;
+        }
+    </style>
+
+    <section class="shadow-blue white-bg padding" style="margin-top: 0">
+        <h3 class="section-title">Blog Detail</h3>
+        <div class="spacer" data-height="40"></div>
+        <div class="row">
+            
+
+            <div class="col-sm-12 col-lg-12 m-4">
+                <div class="card hoverable p-5 shadow-dark white-bg ground ">
+                    <div class="card-body">
+                        <div class="row ">
+                            <div class="col-sm-3 col-lg-2 ">
+                                <a href="{% url 'user_profile' blog.author.profile.user.username %}"><img style="float:left;" class="circletag" src="{{blog.author.profile.image.url}}" alt="profile image"></a>
+                            </div>
+                            <div class="col-sm-9 col-lg-10">
+                                <a href="{% url 'user_profile' blog.author.profile.user.username %}"><h4 style="display:inline;">{{blog.author.profile.user.username}}</h4></a>
+                                {% if blog.author == user %}
+                                    <a href="{% url 'blog_delete' blog.id %}" class="float-right"><img style="border:0; width:35px; padding:5px;" src="{% static 'icon/i-blue-delete.png' %}" /><a>
+                                    <a href="{% url 'blog_update' blog.id %}" class="float-right"><img style="border:0; width:35px; padding:5px;" src="{% static 'icon/i-edit.png' %}" /><a>
+                                {% endif %}
+                                <p style="display:inline; float:right;">{{blog.cr_date | date:"H:i l, d.m.y"}}</p>
+                                <div class="spacer" data-height="30"></div>
+
+                                <p class="text-muted font-weight-light mb-0">{{blog.text}}</p>
+                                <div class="spacer" data-height="20"></div>
+                                
+                                <center>
+                                <img style="height:400px;  border-radius: 15px; " src="{{blog.picture.url}}">
+                                </center>
+                                <div class="spacer" data-height="30"></div>
+                                
+                                
+                                <div class="spacer" data-height="30"></div>
+
+                                <h3 class="section-title">Comments</h3>
+                                <div class="spacer" data-height="40"></div>
+
+
+                                {% comment %} <div class="card hoverable p-5 shadow-dark white-bg ground ">
+                                    <div class="card-body">
+                                        <div class="row ">
+                                            <div class="col-md-12 ">
+                                                <form method="POST" enctype="multipart/form-data">
+                                                    {% csrf_token %}
+                                                    <fieldset class="form-group">
+                                                        {{ form | crispy }}
+                                                    </fieldset>
+                                                    <div class="form-group">
+                                                        <button class="btn btn-default btn-sm" type="submit">comment</button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div> {% endcomment %}
+
+                                <form method="POST" enctype="multipart/form-data">
+                                    {% csrf_token %}
+                                    <fieldset class="form-group">
+                                        {{ form | crispy }}
+                                    </fieldset>
+                                    <div class="form-group">
+                                        <button class="btn btn-default btn-sm" type="submit">comment</button>
+                                    </div>
+                                </form>
+
+
+                                <div class="spacer" data-height="30"></div>
+
+
+                                {% for comment in comments %}
+                                    <div class="card hoverable p-5 shadow-dark white-bg ground ">
+                                        <div class="card-body">
+                                            <div class="row ">
+                                                <div class="col-sm-3 col-lg-2 ">
+                                                    <a href="{% url 'user_profile' comment.author.profile.user.username %}"><img style="float:left; width:50px; height:50px; border-radius: 50%; "  src="{{comment.author.profile.image.url}}" alt="profile image"></a>
+                                                </div>
+                                                <div class="col-sm-9 col-lg-10">
+                                                    <a href="{% url 'user_profile' comment.author.profile.user.username %}"><h4 style="display:inline;">{{comment.author.profile.user.username}}</h4></a>
+                                                    {% if comment.author == user %}
+                                                        <a href="{% url 'comment_delete' comment.id %}" class="float-right"><img style="border:0; width:35px; padding:5px;" src="{% static 'icon/i-blue-delete.png' %}" /><a>
+                                                        <a href="{% url 'comment_update' comment.id %}" class="float-right"><img style="border:0; width:35px; padding:5px;" src="{% static 'icon/i-edit.png' %}" /><a>
+                                                    {% endif %}
+                                                    <p style="display:inline; float:right;">{{ comment.cr_date | date:"H:i l, d.m.y" }}</p>
+                                                    <div class="spacer" data-height="30"></div>
+
+                                                    <p class="text-muted font-weight-light mb-0">{{comment.text}}</p>
+                                                    <div class="spacer" data-height="20"></div>
+
+                                                    {% if comment.picture %}
+                                                    <img style="border-radius: 15px; " src="{{comment.picture.url}}">
+                                                    <div class="spacer" data-height="30"></div>
+                                                    {% endif %}
+                                                    
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                <div class="spacer" data-height="30"></div>
+
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+</main>
+
+{% endblock %}

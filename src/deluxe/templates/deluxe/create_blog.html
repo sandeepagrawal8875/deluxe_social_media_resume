@@ -1,0 +1,42 @@
+{% extends 'deluxe/create_base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+<!-- main content area -->
+<main class="content float-right">
+
+
+<style>
+.hero {
+    height: auto;
+    margin-top: 0;
+}
+</style>
+
+    <!-- section login -->
+    <section class="hero background parallax shadow-dark d-flex align-items-center padding" id="home" >
+        <div class="cta mx-auto mt-2">
+            <h1 class="section-title mt-0 mb-4">{{tag_line}}<span class="dot"></span></h1>
+            <div class="spacer" data-height="80"></div>
+            <div class="row">
+                <div class="col-md">
+                    <div class="container">
+                        <div class="content-section">
+                            <form method="post" enctype="multipart/form-data">
+                                {% csrf_token %}
+                                {{form |crispy}}
+                                <input type="Submit" name="create_blog" class="btn btn-default btn-danger">
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="overlay"></div>
+    </section>
+
+</main>
+
+{% endblock %}
